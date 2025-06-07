@@ -2,15 +2,41 @@
   <div class="top-bar">
     <div class="container">
       <h1 class="logo">SagWasDuSiehst</h1>
-      <nav class="nav-links">
+
+      <!-- Desktop Navigation -->
+      <nav
+        class="nav-links desktop-nav"
+        :class="{ 'mobile-open': isMobileMenuOpen }"
+      >
         <a href="#" class="nav-link">Practice</a>
         <a href="#" class="nav-link">Learn</a>
         <a href="#" class="nav-link">Community</a>
         <div class="profile-icon">👤</div>
       </nav>
+
+      <!-- Mobile Menu Toggle -->
+      <button
+        class="mobile-toggle"
+        @click="toggleMobileMenu"
+        :class="{ active: isMobileMenuOpen }"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+
+const isMobileMenuOpen = ref(false);
+
+const toggleMobileMenu = () => {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value;
+};
+</script>
 
 <style scoped>
 /* Top Bar */
@@ -94,5 +120,115 @@
   border-color: rgba(236, 29, 121, 0.4);
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(236, 29, 121, 0.2);
+}
+
+/* Mobile Menu Toggle */
+.mobile-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+}
+
+.mobile-toggle span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: var(--text-primary);
+  border-radius: 3px;
+  opacity: 1;
+  left: 0;
+  transform: rotate(0deg);
+  transition: 0.25s ease-in-out;
+}
+
+.mobile-toggle.active span:nth-child(1) {
+  top: 9px;
+  transform: rotate(135deg);
+}
+
+.mobile-toggle.active span:nth-child(2) {
+  opacity: 0;
+  left: -30px;
+}
+
+.mobile-toggle.active span:nth-child(3) {
+  top: 9px;
+  transform: rotate(-135deg);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .mobile-toggle {
+    display: flex;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(43, 14, 46, 0.95);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    flex-direction: column;
+    gap: 0;
+    padding: 20px 0;
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 99;
+  }
+
+  .nav-links.mobile-open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .nav-link {
+    padding: 16px 32px;
+    border-radius: 0;
+    width: 100%;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .nav-link:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: none;
+  }
+
+  .profile-icon {
+    margin: 16px 32px 0;
+    align-self: flex-start;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-bar {
+    padding: 16px 0;
+  }
+
+  .logo {
+    font-size: 1.25rem;
+  }
+
+  .container {
+    padding: 0 16px;
+  }
 }
 </style>
